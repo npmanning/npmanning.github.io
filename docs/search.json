@@ -7,10 +7,24 @@
     "text": "About this site\n\n1 + 1\n\n[1] 2"
   },
   {
+    "objectID": "marchmadness.html",
+    "href": "marchmadness.html",
+    "title": "March Madness Tidy Tuesday",
+    "section": "",
+    "text": "This data can be found here.\nIt was found on ESPN, Kenpom, Yahoo Sports and Heat Check CBB."
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Noah Manning’s Website",
     "section": "",
-    "text": "Welcome to my website!\nHere is my Tidy Tuesday analysis!"
+    "text": "Welcome to my website!\nHere’s a little about me: I am a sophomore at Pomona College, and I study Statistics. In my free time I like to play soccer, basketball and ski. I am on the 5C ski team, and I also enjoy cooking and watching movies. I am originally from Maine, and I have a sister and two dogs."
+  },
+  {
+    "objectID": "collegebudgets.html",
+    "href": "collegebudgets.html",
+    "title": "College Sports Budgets Tidy Tuesday",
+    "section": "",
+    "text": "This data can be found at here.\nIt was gathered from Equity in Sports Data Analysis."
   }
 ]

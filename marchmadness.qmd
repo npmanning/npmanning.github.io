@@ -1,0 +1,25 @@
+---
+title: "March Madness Tidy Tuesday"
+description: |
+  Analysis of March Madness data from TidyTuesday
+author: Noah Manning
+date: February 19, 2025
+format: html
+---
+
+```{r,echo=FALSE}
+library(ggplot2)
+library(readr)
+Seed_Results <- read_csv("Seed Results.csv",show_col_types = FALSE)
+
+Seed_Results |> 
+  ggplot(aes(x=`WIN%`,y=F4))+
+  geom_point()+
+  labs(title="Win Percentage vs. Final Fours by Seed", x="Win Percentage by Seed",y="Final Fours Reached")
+```
+
+This data can be found [here](https://www.kaggle.com/datasets/nishaanamin/march-madness-data?resource=download).
+
+It was found on ESPN, Kenpom, Yahoo Sports and Heat Check CBB.
+
+

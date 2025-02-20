@@ -1,14 +1,19 @@
 project:
   type: website
   output-dir: docs
-  
+
 website:
   title: "Noah Manning's Website"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: about.qmd
+        text: About
+      - href: marchmadness.qmd
+        text: March Madness
+      - href: collegebudgets.qmd
+        text: College Sports Budgets
 
 format:
   html:
@@ -17,4 +22,3 @@ format:
     toc: true
 
 editor: visual
-

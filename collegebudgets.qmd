@@ -1,0 +1,28 @@
+---
+title: "College Sports Budgets Tidy Tuesday"
+description: |
+  Analysis of College Athletics Budget data from TidyTuesday
+author: Noah Manning
+date: February 19, 2025
+format: html
+---
+
+
+```{r,echo=FALSE}
+suppressMessages(library(tidyverse))
+suppressMessages(library(ggplot2))
+suppressMessages(suppressWarnings(sports_data <- tidytuesdayR::tt_load('2022-03-29')))
+df <- sports_data$sports
+ggplot(df,aes(x=exp_men))+
+  geom_histogram(binwidth = 10000,na.rm = TRUE)+
+  scale_x_continuous(limits = c(0, 1000000))
+ggplot(df,aes(x=exp_women))+
+  geom_histogram(binwidth = 10000,na.rm = TRUE)+
+  scale_x_continuous(limits = c(0, 1000000))
+```
+
+
+
+This data can be found at [here](https://github.com/rfordatascience/tidytuesday/tree/main/data/2022/2022-03-29).
+
+It was gathered from Equity in Sports Data Analysis.

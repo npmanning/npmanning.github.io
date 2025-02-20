@@ -1,7 +1,16 @@
 ---
 title: "Noah Manning's Website"
+image: IMG_5331.jpeg
+toc: false
+about: 
+  template: jolla
+  image-shape: round
+  image-width: 17em
+  links:
+    - text: GitHub
+      href: https://github.com/npmanning/npmanning.github.io
 ---
 
 Welcome to my website!
 
-Here is my Tidy Tuesday analysis!
+Here's a little about me: I am a sophomore at Pomona College, and I study Statistics. In my free time I like to play soccer, basketball and ski. I am on the 5C ski team, and I also enjoy cooking and watching movies. I am originally from Maine, and I have a sister and two dogs.
