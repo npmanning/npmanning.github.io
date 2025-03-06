@@ -21,5 +21,3 @@ Seed_Results |>
 This data can be found [here](https://www.kaggle.com/datasets/nishaanamin/march-madness-data?resource=download).
 
 It was found on ESPN, Kenpom, Yahoo Sports and Heat Check CBB.
-
-

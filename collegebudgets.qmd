@@ -7,7 +7,6 @@ date: February 19, 2025
 format: html
 ---
 
-
 ```{r,echo=FALSE}
 suppressMessages(library(tidyverse))
 suppressMessages(library(ggplot2))
@@ -20,8 +19,6 @@ ggplot(df,aes(x=exp_women))+
   geom_histogram(binwidth = 10000,na.rm = TRUE)+
   scale_x_continuous(limits = c(0, 1000000))
 ```
-
-
 
 This data can be found at [here](https://github.com/rfordatascience/tidytuesday/tree/main/data/2022/2022-03-29).
 
