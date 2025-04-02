@@ -14,6 +14,8 @@ website:
         text: March Madness
       - href: collegebudgets.qmd
         text: College Sports Budgets
+      - href: project3.qmd
+        text: Project Part 3
 
 format:
   html:
