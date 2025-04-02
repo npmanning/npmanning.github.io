@@ -14,7 +14,7 @@ website:
         text: College Sports Budgets
       - href: tweets.qmd
         text: Project 2 Tweet Analysis
-      - href: project3.qmd
+      - href: projectpart3.qmd
         text: Project 3
 
 format:
