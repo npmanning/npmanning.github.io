@@ -8,8 +8,6 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - href: marchmadness.qmd
-        text: March Madness
       - href: collegebudgets.qmd
         text: College Sports Budgets
       - href: tweets.qmd
