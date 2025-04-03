@@ -85,3 +85,6 @@ null_distribution|>
   summarize(p_value=round(1-mean(perm_diff>obs_diff),6))
 ```
 Here we can see that we got a p-value of 0.0001 (one observation out of 10000), very small, and much less than the commonly used significance level 0.05. This implies that if the null hypothesis were true, we would see our observed result around 0.01% of the time. This means that we have grounds to reject the null hypothesis. So our conclusion is that it seems that the education level of parents of a student does play a significant role in their college GPA.  
+
+
+Rattanaporn, Kiattisak. "Graduation Rate" Kaggle, 2023, https://www.kaggle.com/datasets/rkiattisak/graduation-rate. Accessed 2 April 2025
