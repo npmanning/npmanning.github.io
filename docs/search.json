@@ -7,20 +7,6 @@
     "text": "About this site\n\n1 + 1\n\n[1] 2"
   },
   {
-    "objectID": "marchmadness.html",
-    "href": "marchmadness.html",
-    "title": "March Madness Tidy Tuesday",
-    "section": "",
-    "text": "This data can be found here.\nIt was found on ESPN, Kenpom, Yahoo Sports and Heat Check CBB."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Noah Manning’s Website",
-    "section": "",
-    "text": "Welcome to my website!\nHere’s a little about me: I am a sophomore at Pomona College, and I study Statistics. In my free time I like to play soccer, basketball and ski. I am on the 5C ski team, and I also enjoy cooking and watching movies. I am originally from Maine, and I have a sister and two dogs."
-  },
-  {
     "objectID": "collegebudgets.html",
     "href": "collegebudgets.html",
     "title": "College Sports Budgets Tidy Tuesday",
@@ -40,5 +26,19 @@
     "title": "Project Part 3",
     "section": "",
     "text": "Show code\nlibrary(readr)\ngrad_stats &lt;- read_csv(\"~/Downloads/graduation_rate.csv\")\n\n\nIn this part of the project, I will be doing hypothesis testing on whether parental level of education has a significant effect on the college GPA of students. These are our null and alternate hypotheses:\n\\(H_0:\\mu_{high school}=\\mu_{bachelors degree}\\)\n\\(H_a:\\mu_{high school}&lt;\\mu_{bachelors degree}\\)\nFirst we will filter the data so we are just left with students whose parents level of education is either high school or bachelor’s degree.\n\n\nShow code\nlibrary(dplyr)\ngrad_stats &lt;- grad_stats %&gt;%\n  filter(`parental level of education` %in% c(\"high school\", \"bachelor's degree\"))\n\n\nNow we will find our observed difference between the average college gpa of a student whose parents finished high school and a student whose parents have a bachelor’s degree.\n\n\nShow code\ngrad_stats|&gt;\n  group_by(`parental level of education`)|&gt;\n  summarize(meangpa = mean(`college gpa`))\n\n\n# A tibble: 2 × 2\n  `parental level of education` meangpa\n  &lt;chr&gt;                           &lt;dbl&gt;\n1 bachelor's degree                3.45\n2 high school                      3.34\n\n\nShow code\ngrad_stats|&gt;\n  group_by(`parental level of education`)|&gt;\n  summarize(meangpa = mean(`college gpa`))|&gt;\n  summarize(diff=diff(meangpa))\n\n\n# A tibble: 1 × 1\n    diff\n   &lt;dbl&gt;\n1 -0.107\n\n\nNow we will create our null sampling distribution which will let us decide whether our results that we found are statistically significant. To do this we will create a function.\n\n\nShow code\nlibrary(purrr)\nnull_dist &lt;- function(data){\n  mutate(data, gpa_perm=sample(`college gpa`,replace = FALSE))|&gt;\n    group_by(`parental level of education`)|&gt;\n    summarize(obs_gpa=mean(`college gpa`),\n              perm_mean=mean(gpa_perm))|&gt;\n    summarize(obs_diff=diff(obs_gpa),\n              perm_diff=diff(perm_mean))\n}\n\n\nNow we will use the function to plot the distribution and compare it to our observed value.\n\n\nShow code\nlibrary(ggplot2)\nset.seed(1000)\nnull_distribution &lt;- map_dfr(c(1:10000),~null_dist(grad_stats))\nnull_distribution|&gt;\n  ggplot(aes(x=perm_diff))+\n  geom_histogram()+\n  geom_vline(aes(xintercept=obs_diff))+\n  labs(x=\"GPA Difference\", title=\"Null Sampling Distribution of Difference in GPA\")\n\n\n\n\n\n\n\n\n\nShown in this plot is the null sampling distribution for the differences in GPAs given that the null hypothesis is true. Also pictured as a vertical line is the observed value that we got. We can see that our observed value seems to be fairly extreme compared to the null sampling distribution that we found.\nTo figure out how extreme our value is, we will now find the proportion of the reps in the null distribution that were more extreme than our observed value. This is our p-value.\n\n\nShow code\nnull_distribution|&gt;\n  summarize(p_value=round(1-mean(perm_diff&gt;obs_diff),6))\n\n\n# A tibble: 1 × 1\n  p_value\n    &lt;dbl&gt;\n1  0.0001\n\n\nHere we can see that we got a p-value of 0.0001 (one observation out of 10000), very small, and much less than the commonly used significance level 0.05. This implies that if the null hypothesis were true, we would see our observed result around 0.01% of the time. This means that we have grounds to reject the null hypothesis. So our conclusion is that it seems that the education level of parents of a student does play a significant role in their college GPA."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Noah Manning’s Website",
+    "section": "",
+    "text": "Welcome to my website!\nHere’s a little about me: I am a sophomore at Pomona College, and I study Statistics. In my free time I like to play soccer, basketball and ski. I am on the 5C ski team, and I also enjoy cooking and watching movies. I am originally from Maine, and I have a sister and two dogs."
+  },
+  {
+    "objectID": "marchmadness.html",
+    "href": "marchmadness.html",
+    "title": "March Madness Tidy Tuesday",
+    "section": "",
+    "text": "This data can be found here.\nIt was found on ESPN, Kenpom, Yahoo Sports and Heat Check CBB."
   }
 ]
