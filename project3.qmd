@@ -1,7 +1,0 @@
----
-title: "Project Part 3"
----
-```{r}
-
-```
-
