@@ -1,0 +1,88 @@
+---
+title: "Project Part 3"
+format: html
+---
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
+library(readr)
+grad_stats <- read_csv("~/Downloads/graduation_rate.csv")
+```
+
+In this part of the project, I will be doing hypothesis testing on whether parental level of education has a significant effect on the college GPA of students. 
+These are our null  and alternate hypotheses:
+
+$H_0:\mu_{high school}=\mu_{bachelors degree}$
+
+$H_a:\mu_{high school}<\mu_{bachelors degree}$
+
+
+
+First we will filter the data so we are just left with students whose parents level of education is either high school or bachelor's degree. 
+```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
+library(dplyr)
+grad_stats <- grad_stats %>%
+  filter(`parental level of education` %in% c("high school", "bachelor's degree"))
+```
+
+Now we will find our observed difference between the average college gpa of a student whose parents finished high school and a student whose parents have a bachelor's degree.  
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
+grad_stats|>
+  group_by(`parental level of education`)|>
+  summarize(meangpa = mean(`college gpa`))
+grad_stats|>
+  group_by(`parental level of education`)|>
+  summarize(meangpa = mean(`college gpa`))|>
+  summarize(diff=diff(meangpa))
+```
+Now we will create our null sampling distribution which will let us decide whether our results that we found are statistically significant. To do this we will create a function.
+```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
+library(purrr)
+null_dist <- function(data){
+  mutate(data, gpa_perm=sample(`college gpa`,replace = FALSE))|>
+    group_by(`parental level of education`)|>
+    summarize(obs_gpa=mean(`college gpa`),
+              perm_mean=mean(gpa_perm))|>
+    summarize(obs_diff=diff(obs_gpa),
+              perm_diff=diff(perm_mean))
+}
+```
+Now we will use the function to plot the distribution and compare it to our observed value. 
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
+library(ggplot2)
+set.seed(1000)
+null_distribution <- map_dfr(c(1:10000),~null_dist(grad_stats))
+null_distribution|>
+  ggplot(aes(x=perm_diff))+
+  geom_histogram()+
+  geom_vline(aes(xintercept=obs_diff))+
+  labs(x="GPA Difference", title="Null Sampling Distribution of Difference in GPA")
+```
+Shown in this plot is the null sampling distribution for the differences in GPAs given that the null hypothesis is true. Also pictured as a vertical line is the observed value that we got. We can see that our observed value seems to be fairly extreme compared to the null sampling distribution that we found. 
+
+To figure out how extreme our value is, we will now find the proportion of the reps in the null distribution that were more extreme than our observed value. This is our p-value.
+```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
+null_distribution|>
+  summarize(p_value=round(1-mean(perm_diff>obs_diff),6))
+```
+Here we can see that we got a p-value of 0.0001 (one observation out of 10000), very small, and much less than the commonly used significance level 0.05. This implies that if the null hypothesis were true, we would see our observed result around 0.01% of the time. This means that we have grounds to reject the null hypothesis. So our conclusion is that it seems that the education level of parents of a student does play a significant role in their college GPA.  
+#test changes
