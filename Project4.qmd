@@ -25,6 +25,8 @@ Our final question that we will examine is: Recognize and mitigate bias in ourse
 There is a lot we can learn from the situation that arose from Amazon’s attempt at making an algorithm to read resumes and rate candidates based on those resumes. Among those lessons: Recognize bias, build diverse teams, investigate your variables and make sure your training data fits with what you are trying to use your algorithm for. 
 
 **Citations**
+
+
 BBC News. “Amazon Scrapped 'Sexist AI' Tool.” BBC News, 10 Oct. 2018, https://www.bbc.com/news/technology-45809919.
 
 Dastin, Jeffrey. “Amazon Scraps Secret AI Recruiting Tool That Showed Bias against Women.” Reuters, 10 Oct. 2018, https://www.reuters.com/article/us-amazon-com-jobs-automation-insight-idUSKCN1MK08G/.
