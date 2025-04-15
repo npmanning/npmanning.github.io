@@ -16,6 +16,8 @@ website:
         text: Project 2 Tweet Analysis
       - href: projectpart3.qmd
         text: Project 3
+      - href: Project4.qmd
+        text: Project Part 4
 
 format:
   html:
