@@ -1,0 +1,105 @@
+---
+title: "Project Part 5"
+format: html
+---
+
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
+con_traffic <- DBI::dbConnect(
+  RMariaDB::MariaDB(),
+  dbname = "traffic",
+  host = Sys.getenv("TRAFFIC_HOST"),
+  user = Sys.getenv("TRAFFIC_USER"),
+  password = Sys.getenv("TRAFFIC_PWD")
+)
+```
+
+For this project, I will be conducting an investigation on the impact of widely recognized holidays on different factors regarding traffic stops. I will use different techniques in SQL to wrangle the data and then I will analyze it and build visualizations with it. First we will examine whether there are fewer traffic stops in Los Angeles on Christmas than other days. 
+
+```{sql connection=con_traffic}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
+#| output.var: "la_dates_table"
+SELECT 
+  DATE_FORMAT(date, '%m-%d') AS month_day,
+  COUNT(*) AS num_stops
+FROM ca_los_angeles_2020_04_01
+GROUP BY month_day
+ORDER BY month_day;
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
+library(ggplot2)
+library(stringr)
+library(dplyr)
+december_table <- la_dates_table|>
+  filter(str_detect(month_day, "^12"))
+ggplot(december_table,aes(x=month_day,y=num_stops))+
+  geom_col()+
+  labs(x="Date",y="Traffic Stops")
+```
+We can see in this graph that we have significantly fewer traffic stops on Christmas. 
+
+Now lets look at a different question: How do the racial distributions of traffic stops differ between Seattle and Chicago?
+
+```{sql connection=con_traffic}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
+#| output.var: "sf_chi_table"
+SELECT subject_race,city,
+  COUNT(*) AS num_stops
+FROM
+( SELECT 'Chicago' AS city, subject_race, date, time, type 
+  FROM il_chicago_2023_01_26
+  UNION
+  SELECT 'San Francisco' AS city, subject_race, date, time, type 
+  FROM ca_san_francisco_2020_04_01
+  ) AS combined_table
+GROUP BY 
+  subject_race, city
+ORDER BY 
+  num_stops DESC;
+
+```
+
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
+library(ggplot2)
+library(stringr)
+library(dplyr)
+sf_chi_table |>
+  arrange(city, subject_race)|>
+  head(12)
+```
+Here we run into the problem of what to do with our NAs, particularly since there are many, many more in Chicago than San Francisco Since we only care about the differences in race, we are going to choose to omit the NAs and unknowns from the data. 
+```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
+library(ggplot2)
+library(stringr)
+library(dplyr)
+sf_chi_table_clean <- sf_chi_table %>%
+  filter(!is.na(subject_race), 
+         !tolower(subject_race) %in% c("unknown", "other"))
+ggplot(sf_chi_table_clean, aes(x = city, y = num_stops, fill = subject_race)) +
+  geom_col()+
+  labs(x="Traffic Stops", y= "City")
+```
+There are a few interesting conclusions that we can draw from this graph. We can see that many more hispanic and black people are pulled over in Chicago, while many more asian and white people are pulled over in San Francisco. This makes sense, but it is still worth noting that about 50% of Chicago's traffic stops are black, despite only 30% of the Chicago population being black. 
+
+
+**References**
+
+Pierson, Emma, Camelia Simoiu, Jan Overgoor, Sam Corbett-Davies, Daniel Jenson, Amy Shoemaker, Vignesh Ramachandran, et al. 2020. “A Large-Scale Analysis of Racial Disparities in Police Stops Across the United States.” Nature Human Behaviour, 1–10.
