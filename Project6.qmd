@@ -1,0 +1,82 @@
+---
+title: "Analysis of Student High School GPA"
+author: "Noah Manning"
+subtitle: "May 9, 2025"
+format:
+  revealjs:
+    scrollable: true
+    slide-number: true
+    show-slide-number: all
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+**Hypothesis Testing of GPA**
+
+In this project we are trying to figure out if the parental education level has an effect on the GPA of high school students. We will do this using the hypothesis testing techniques that we learned in class. 
+
+##
+
+**Hypotheses**
+```{r}
+library(knitr)
+include_graphics("~/Downloads/hypotheses.png")
+```
+
+##
+**Observed Difference**
+```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
+library(readr)
+grad_stats <- read_csv("~/Downloads/graduation_rate.csv")
+library(dplyr)
+grad_stats <- grad_stats %>%
+  filter(`parental level of education` %in% c("high school", "bachelor's degree"))
+grad_stats|>
+  group_by(`parental level of education`)|>
+  summarize(meangpa = mean(`college gpa`))
+```
+##
+**Make Shuffling Function and Visualize Result**
+```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
+library(purrr)
+null_dist <- function(data){
+  mutate(data, gpa_perm=sample(`college gpa`,replace = FALSE))|>
+    group_by(`parental level of education`)|>
+    summarize(obs_gpa=mean(`college gpa`),
+              perm_mean=mean(gpa_perm))|>
+    summarize(obs_diff=diff(obs_gpa),
+              perm_diff=diff(perm_mean))
+}
+library(ggplot2)
+set.seed(1000)
+null_distribution <- map_dfr(c(1:10000),~null_dist(grad_stats))
+null_distribution|>
+  ggplot(aes(x=perm_diff))+
+  geom_histogram()+
+  geom_vline(aes(xintercept=obs_diff))+
+  labs(x="GPA Difference", title="Null Sampling Distribution of Difference in GPA")
+```
+##
+**Calculate p-value**
+```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
+null_distribution|>
+  summarize(p_value=round(1-mean(perm_diff>obs_diff),6))
+```
+
+##
+
+**Source**
+
+Rattanaporn, Kiattisak. Graduation Rate. Kaggle, https://www.kaggle.com/datasets/rkiattisak/graduation-rate.
