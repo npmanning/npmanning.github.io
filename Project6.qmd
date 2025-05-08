@@ -22,6 +22,9 @@ In this project we are trying to figure out if the parental education level has 
 
 **Hypotheses**
 ```{r}
+#| code-fold: true
+#| code-summary: "Show code"
+#| message: false
 library(knitr)
 include_graphics("~/Downloads/hypotheses.png")
 ```
@@ -42,7 +45,7 @@ grad_stats|>
   summarize(meangpa = mean(`college gpa`))
 ```
 ##
-**Make Shuffling Function and Visualize Result**
+**Make Permuting Function and Visualize Result**
 ```{r}
 #| code-fold: true
 #| code-summary: "Show code"
@@ -63,7 +66,7 @@ null_distribution|>
   ggplot(aes(x=perm_diff))+
   geom_histogram()+
   geom_vline(aes(xintercept=obs_diff))+
-  labs(x="GPA Difference", title="Null Sampling Distribution of Difference in GPA")
+labs(x = expression(bar(x[1]) - bar(x[2])), title = "Null Sampling Distribution of Difference in GPA")
 ```
 ##
 **Calculate p-value**

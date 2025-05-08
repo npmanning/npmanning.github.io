@@ -39,7 +39,7 @@
     "href": "Project6.html#section",
     "title": "Analysis of Student High School GPA",
     "section": "",
-    "text": "Hypotheses\n\nlibrary(knitr)\ninclude_graphics(\"~/Downloads/hypotheses.png\")"
+    "text": "Hypotheses\n\n\nShow code\nlibrary(knitr)\ninclude_graphics(\"~/Downloads/hypotheses.png\")"
   },
   {
     "objectID": "Project6.html#section-1",
@@ -53,7 +53,7 @@
     "href": "Project6.html#section-2",
     "title": "Analysis of Student High School GPA",
     "section": "",
-    "text": "Make Shuffling Function and Visualize Result\n\n\nShow code\nlibrary(purrr)\nnull_dist &lt;- function(data){\n  mutate(data, gpa_perm=sample(`college gpa`,replace = FALSE))|&gt;\n    group_by(`parental level of education`)|&gt;\n    summarize(obs_gpa=mean(`college gpa`),\n              perm_mean=mean(gpa_perm))|&gt;\n    summarize(obs_diff=diff(obs_gpa),\n              perm_diff=diff(perm_mean))\n}\nlibrary(ggplot2)\nset.seed(1000)\nnull_distribution &lt;- map_dfr(c(1:10000),~null_dist(grad_stats))\nnull_distribution|&gt;\n  ggplot(aes(x=perm_diff))+\n  geom_histogram()+\n  geom_vline(aes(xintercept=obs_diff))+\n  labs(x=\"GPA Difference\", title=\"Null Sampling Distribution of Difference in GPA\")"
+    "text": "Make Permuting Function and Visualize Result\n\n\nShow code\nlibrary(purrr)\nnull_dist &lt;- function(data){\n  mutate(data, gpa_perm=sample(`college gpa`,replace = FALSE))|&gt;\n    group_by(`parental level of education`)|&gt;\n    summarize(obs_gpa=mean(`college gpa`),\n              perm_mean=mean(gpa_perm))|&gt;\n    summarize(obs_diff=diff(obs_gpa),\n              perm_diff=diff(perm_mean))\n}\nlibrary(ggplot2)\nset.seed(1000)\nnull_distribution &lt;- map_dfr(c(1:10000),~null_dist(grad_stats))\nnull_distribution|&gt;\n  ggplot(aes(x=perm_diff))+\n  geom_histogram()+\n  geom_vline(aes(xintercept=obs_diff))+\nlabs(x = expression(bar(x[1]) - bar(x[2])), title = \"Null Sampling Distribution of Difference in GPA\")"
   },
   {
     "objectID": "Project6.html#section-3",
