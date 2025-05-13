@@ -16,11 +16,12 @@ execute:
 
 **Hypothesis Testing of GPA**
 
-In this project we are trying to figure out if the parental education level has an effect on the GPA of high school students. We will do this using the hypothesis testing techniques that we learned in class. 
+In this project we are trying to figure out if the parental education level has an effect on the GPA of high school students. We will do this using the hypothesis testing techniques that we learned in class.
 
-##
+## 
 
 **Hypotheses**
+
 ```{r}
 #| code-fold: true
 #| code-summary: "Show code"
@@ -29,8 +30,16 @@ library(knitr)
 include_graphics("~/Downloads/hypotheses.png")
 ```
 
-##
+## 
+
+**Disclaimer**
+
+It is worth noting that the data used for this project has been produced at random and is not real collected data. It will still be useful for our data analysis however.
+
+## 
+
 **Observed Difference**
+
 ```{r}
 #| code-fold: true
 #| code-summary: "Show code"
@@ -44,8 +53,11 @@ grad_stats|>
   group_by(`parental level of education`)|>
   summarize(meangpa = mean(`college gpa`))
 ```
-##
+
+## 
+
 **Make Permuting Function and Visualize Result**
+
 ```{r}
 #| code-fold: true
 #| code-summary: "Show code"
@@ -68,8 +80,11 @@ null_distribution|>
   geom_vline(aes(xintercept=obs_diff))+
 labs(x = expression(bar(x[1]) - bar(x[2])), title = "Null Sampling Distribution of Difference in GPA")
 ```
-##
+
+## 
+
 **Calculate p-value**
+
 ```{r}
 #| code-fold: true
 #| code-summary: "Show code"
@@ -78,7 +93,7 @@ null_distribution|>
   summarize(p_value=round(1-mean(perm_diff>obs_diff),6))
 ```
 
-##
+## 
 
 **Source**
 

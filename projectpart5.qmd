@@ -1,8 +1,7 @@
 ---
-title: "Project Part 5"
+title: "SQL Police Data Analysis"
 format: html
 ---
-
 
 ```{r}
 #| code-fold: true
@@ -17,7 +16,7 @@ con_traffic <- DBI::dbConnect(
 )
 ```
 
-For this project, I will be conducting an investigation on the impact of widely recognized holidays on different factors regarding traffic stops. I will use different techniques in SQL to wrangle the data and then I will analyze it and build visualizations with it. First we will examine whether there are fewer traffic stops in Los Angeles on Christmas than other days. 
+For this project, I will be conducting an investigation on the impact of widely recognized holidays on different factors regarding traffic stops. I will use different techniques in SQL to wrangle the data and then I will analyze it and build visualizations with it. First we will examine whether there are fewer traffic stops in Los Angeles on Christmas than other days.
 
 ```{sql connection=con_traffic}
 #| code-fold: true
@@ -43,9 +42,11 @@ december_table <- la_dates_table|>
   filter(str_detect(month_day, "^12"))
 ggplot(december_table,aes(x=month_day,y=num_stops))+
   geom_col()+
-  labs(x="Date",y="Traffic Stops")
+  labs(x="Date",y="Traffic Stops")+ 
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))
 ```
-We can see in this graph that we have significantly fewer traffic stops on Christmas. 
+
+We can see in this graph that we have significantly fewer traffic stops on Christmas.
 
 Now lets look at a different question: How do the racial distributions of traffic stops differ between Seattle and Chicago?
 
@@ -70,7 +71,6 @@ ORDER BY
 
 ```
 
-
 ```{r}
 #| code-fold: true
 #| code-summary: "Show code"
@@ -82,7 +82,9 @@ sf_chi_table |>
   arrange(city, subject_race)|>
   head(12)
 ```
-Here we run into the problem of what to do with our NAs, particularly since there are many, many more in Chicago than San Francisco Since we only care about the differences in race, we are going to choose to omit the NAs and unknowns from the data. 
+
+Here we run into the problem of what to do with our NAs, particularly since there are many, many more in Chicago than San Francisco Since we only care about the differences in race, we are going to choose to omit the NAs and unknowns from the data.
+
 ```{r}
 #| code-fold: true
 #| code-summary: "Show code"
@@ -97,8 +99,8 @@ ggplot(sf_chi_table_clean, aes(x = city, y = num_stops, fill = subject_race)) +
   geom_col()+
   labs(x="Traffic Stops", y= "City")
 ```
-There are a few interesting conclusions that we can draw from this graph. We can see that many more hispanic and black people are pulled over in Chicago, while many more asian and white people are pulled over in San Francisco. This makes sense, but it is still worth noting that about 50% of Chicago's traffic stops are black, despite only 30% of the Chicago population being black. 
 
+There are a few interesting conclusions that we can draw from this graph. We can see that many more hispanic and black people are pulled over in Chicago, while many more asian and white people are pulled over in San Francisco. This makes sense, but it is still worth noting that about 50% of Chicago's traffic stops are black, despite only 30% of the Chicago population being black.
 
 **References**
 

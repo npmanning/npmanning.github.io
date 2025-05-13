@@ -18,6 +18,8 @@ Seed_Results |>
   labs(title="Win Percentage vs. Final Fours by Seed", x="Win Percentage by Seed",y="Final Fours Reached")
 ```
 
-This data can be found [here](https://www.kaggle.com/datasets/nishaanamin/march-madness-data?resource=download).
+On this graph, we can see that higher seeds have reached many more final fours than lower seeds in march madness tournaments. 
 
-It was found on ESPN, Kenpom, Yahoo Sports and Heat Check CBB.
+**References**
+
+Amin, N. (2025). March Madness Data. Kaggle.
